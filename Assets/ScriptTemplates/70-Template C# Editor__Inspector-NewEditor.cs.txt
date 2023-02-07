@@ -1,0 +1,37 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+
+/// <summary>
+/// BGM用のスクリプタブルオブジェクト
+/// </summary>
+[CustomEditor(typeof(#SCRIPTNAME#))]
+public class #SCRIPTNAME# : Editor
+{
+    #region Override Method
+
+    public override void OnInspectorGUI()
+    {
+        EditorGUI.BeginDisabledGroup(true);
+        EditorGUILayout.ObjectField("Editor", MonoScript.FromScriptableObject(this), typeof(MonoScript), false);
+        EditorGUI.EndDisabledGroup();
+
+        base.OnInspectorGUI();
+
+        var #SCRIPTNAME# = target as #SCRIPTNAME#;
+        var style = new GUIStyle(EditorStyles.label);
+        style.richText = true;
+
+        EditorGUILayout.Space();
+
+        _isOpening = EditorGUILayout.Foldout(_isOpening, "Settings");
+        if (_isOpening)
+        {
+            EditorGUILayout.Space();
+
+        }
+    }
+    #endregion
+}
+#ROOTNAMESPACEEND#

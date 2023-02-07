@@ -1,0 +1,27 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
+#ROOTNAMESPACEBEGIN#
+/// <summary>
+/// スクリプト
+/// </summary>
+public class #SCRIPTNAME# : MonoBehaviour
+{
+    #region Unity Methods
+
+    private void Awake()
+    {
+            #NOTRIM#
+    }
+
+    private void Update()
+    {
+            #NOTRIM#
+    }
+
+    #endregion
+}
+#ROOTNAMESPACEEND#
