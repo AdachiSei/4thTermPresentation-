@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bbe0c3037ad25e49a789a7e7545db9c, type: 3}
   m_Name: TestBGMData
   m_EditorClassIdentifier: 
-  _name: 
+  _name: Test
   _volume: 1
   _bgmClip: {fileID: 0}
