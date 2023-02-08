@@ -36,7 +36,7 @@ public static class AudioNickNameCreator
 		CreateScriptBGM();
 		CreateScriptSFX();
 
-		Debug.Log("AudioNamesを作成完了");
+		Debug.Log("AudioNameを作成完了");
 	}
 
 	/// <summary>
@@ -44,7 +44,7 @@ public static class AudioNickNameCreator
 	/// </summary>
 	public static void CreateScriptBGM()
 	{
-		StringBuilder builder = new StringBuilder();
+		var builder = new StringBuilder();
 
 		builder.AppendLine("/// <summary>");
 		builder.AppendLine("/// 音楽名を定数で管理するクラス");
