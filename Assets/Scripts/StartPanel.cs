@@ -32,6 +32,9 @@ public class StartPanel : MonoBehaviour
     [SerializeField]
     private GameManager _gameManager = null;
 
+    [SerializeField]
+    private PlayerManager _playerManager = null;
+
     private void Awake()
     {
         // デフォルトのプレイヤーネーム
@@ -65,8 +68,11 @@ public class StartPanel : MonoBehaviour
         _uiRoot.SetActive(false);
 
         // チームカラーを決定して初期化
-        _gameManager.Initialize(PhotonNetwork.IsMasterClient ? TeamColor.Red : TeamColor.Blue);
+        _gameManager.Init(PhotonNetwork.IsMasterClient ? TeamColor.Red : TeamColor.Blue);
 
+        await UniTask.WaitUntil(() => PhotonNetwork.PlayerList.Length > 1);
+
+        _playerManager.SetTest();
         //yield return _fadeImageController.AnimateDissolveLevel(0, 1, 0.6f);
     }
 }

@@ -39,6 +39,11 @@ public class RPCManager : MonoBehaviour
         _photonView.RPC(nameof(StartGame), RpcTarget.AllViaServer);
     }
 
+    public void SendMovePlayer(Vector3 velocity)
+    {
+        _photonView.RPC(nameof(MovePlayer), RpcTarget.Others, velocity);
+    }
+
     #endregion
 
     #region PunRPC Methods

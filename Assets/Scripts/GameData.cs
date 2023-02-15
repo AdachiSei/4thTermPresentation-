@@ -11,6 +11,8 @@ public class GameData
 
     public TeamColor TeamColor { get; private set; }
 
+    public int Score { get; private set; }
+
     #endregion
 
     #region Public Method
@@ -18,6 +20,11 @@ public class GameData
     public GameData(TeamColor teamColor)
     {
         TeamColor = teamColor;
+    }
+
+    public void AddScore(int point = 1)
+    {
+        Score += point;
     }
 
     #endregion

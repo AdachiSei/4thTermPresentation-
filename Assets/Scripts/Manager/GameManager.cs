@@ -24,14 +24,14 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private RPCManager _rpcManager = null;
 
-    //[SerializeField]
-    //private TeamComponentHolder _redTeamComponentHolder = null;
+    [SerializeField]
+    private TeamComponentHolder _redTeamComponentHolder = null;
 
-    //[SerializeField]
-    //private TeamComponentHolder _blueTeamComponentHolder = null;
+    [SerializeField]
+    private TeamComponentHolder _blueTeamComponentHolder = null;
 
-    //[SerializeField]
-    //private RingShooter _ringShooter = null;
+    [SerializeField]
+    private PlayerManager _playerManager = null;
 
     //[SerializeField]
     //private TargetManager _targetManager = null;
@@ -62,20 +62,20 @@ public class GameManager : MonoBehaviour
         _rpcManager.OnReceiveStartGame += StartGame;
     }
 
-    public void Initialize(TeamColor myTeamColor)
+    public void Init(TeamColor myTeamColor)
     {
         _myTeamColor = myTeamColor;
-        //_ringShooter.Initialize(_myTeamColor);
+        _playerManager.Init(_myTeamColor);
     }
 
     public void AddScore(TeamColor teamColor, int score)
     {
         var gameData = GetTeamGameData(teamColor);
-        //gameData.Score += score;
-        //GetTeamComponentHolder(teamColor).ScoreText = gameData.Score.ToString();
+        gameData.AddScore(score);
+        GetTeamComponentHolder(teamColor).SetScoreText(gameData.Score.ToString());
 
-        //if (gameData.Score == ScoreToWin)
-        //{
+        if (gameData.Score == ScoreToWin)
+        {
             if (teamColor == _myTeamColor)
             {
                 _resultView.ShowWin();
@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
                 _resultView.ShowLose();
             }
             //_targetManager.DeactivateSpawn();
-        //}
+        }
     }
 
     public GameData GetTeamGameData(TeamColor teamColor)
@@ -93,10 +93,10 @@ public class GameManager : MonoBehaviour
         return teamColor == TeamColor.Red ? _redGameData : _blueGameData;
     }
 
-    //public TeamComponentHolder GetTeamComponentHolder(TeamColor teamColor)
-    //{
-    //    return teamColor == TeamColor.Red ? _redTeamComponentHolder : _blueTeamComponentHolder;
-    //}
+    public TeamComponentHolder GetTeamComponentHolder(TeamColor teamColor)
+    {
+        return teamColor == TeamColor.Red ? _redTeamComponentHolder : _blueTeamComponentHolder;
+    }
 
     private void UpdatePlayerList()
     {

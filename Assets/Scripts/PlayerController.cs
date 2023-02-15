@@ -14,9 +14,21 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    #region Inspector Member
+
+    [SerializeField]
+    [Header("カメラ")]
+    private Camera _mainCamera = null;
+
+    [SerializeField]
+    [Header("スピード")]
+    private float _speed = 5f;
+
+    #endregion
+
     #region Private Member
 
-    Rigidbody _rb;
+    Rigidbody _rb = null;
 
     #endregion
 
@@ -27,30 +39,31 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
     }
 
-    private void Update()
-    {
-        
-    }
-
     #endregion
 
     #region Public Method
+
+    public Vector3 OnContorol()
+    {
+        var h = Input.GetAxisRaw(InputName.HORIZONTAL);
+        var v = Input.GetAxisRaw(InputName.VERTICAL);
+        var y = _rb.velocity.y;
+        return new Vector3(h, y, v).normalized * Time.deltaTime * _speed;
+    }
 
     public void OnMove(Vector3 velocity)
     {
         _rb.velocity = velocity;
     }
 
-    #endregion
-
-    #region Private Property
-
-    private Vector3 OnContorol()
+    public void Activate()
     {
-        var h = Input.GetAxis(InputName.HORIZONTAL);
-        var v = Input.GetAxis(InputName.VERTICAL);
-        var y = _rb.velocity.y;
-        return new(h, y, v);
+        _mainCamera.gameObject.SetActive(true);
+    }
+
+    public void Deactivate()
+    {
+        //_mainCamera.gameObject.SetActive(false);
     }
 
     #endregion
