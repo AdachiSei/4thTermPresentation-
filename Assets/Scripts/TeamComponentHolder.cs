@@ -11,7 +11,7 @@ public class TeamComponentHolder : MonoBehaviour
 {
     public string PlayerName => _playerNameText.text;
     public string ScoreText => _scoreText.text;
-    //public ShotSpace ShotSpace => _shotSpace;
+    public PlayerController Player => _player;
 
     [SerializeField]
     private TMP_Text _playerNameText = null;
@@ -19,8 +19,8 @@ public class TeamComponentHolder : MonoBehaviour
     [SerializeField]
     private TMP_Text _scoreText = null;
 
-    //[SerializeField]
-    //private ShotSpace _shotSpace = null;
+    [SerializeField]
+    private PlayerController _player = null;
 
     public void SetPlayerName(string name) =>
         _playerNameText.text = name;

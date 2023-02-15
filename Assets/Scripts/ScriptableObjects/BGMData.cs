@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// BGM用のスクリプタブルオブジェクト
 /// </summary>
-[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Data", order = 0)]
+[CreateAssetMenu(fileName = "BGMData", menuName = "ScriptableObjects/BGMData", order = 0)]
 public class BGMData : ScriptableObject
 {
     public string Name => _name;

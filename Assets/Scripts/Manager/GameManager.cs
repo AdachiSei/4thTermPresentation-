@@ -56,10 +56,8 @@ public class GameManager : MonoBehaviour
                 _startGameButton.onClick.AddListener(_rpcManager.SendStartGame);
             }
         };
-        _connectionManager.OnPlayerEnteredEvent += player =>
-            UpdatePlayerList();
-        _connectionManager.OnPlayerLeftEvent += player =>
-            UpdatePlayerList();
+        _connectionManager.OnPlayerEnteredEvent += player => UpdatePlayerList();
+        _connectionManager.OnPlayerLeftEvent += player => UpdatePlayerList();
 
         _rpcManager.OnReceiveStartGame += StartGame;
     }

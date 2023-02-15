@@ -13,7 +13,7 @@ public static class Builder
     [MenuItem("Build/Build And Run NowScene", false, 1)]
     private static void BuildAndRunPhotonTutorial()
     {
-        var currentSceneName = SceneManager.GetActiveScene().ToString();
+        var currentSceneName = "GameScene";//SceneManager.GetActiveScene().ToString();
         BuildAndRun(currentSceneName, currentSceneName);
     }
 

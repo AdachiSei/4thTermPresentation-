@@ -19,7 +19,7 @@ public class RPCManager : MonoBehaviour
     #region Event
 
     public event Action OnReceiveStartGame;
-    public event Action OnMovePlayer;
+    public event Action<Vector3> OnMovePlayer;
 
     #endregion
 
@@ -47,6 +47,12 @@ public class RPCManager : MonoBehaviour
     private void StartGame()
     {
         OnReceiveStartGame?.Invoke();
+    }
+
+    [PunRPC]
+    private void MovePlayer(Vector3 velocity)
+    {
+        OnMovePlayer?.Invoke(velocity);
     }
 
     #endregion

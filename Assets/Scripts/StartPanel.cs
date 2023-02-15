@@ -29,8 +29,8 @@ public class StartPanel : MonoBehaviour
     [SerializeField]
     private ConnectionManager _connectionManager = null;
 
-    //[SerializeField]
-    //private GameManager _gameManager = null;
+    [SerializeField]
+    private GameManager _gameManager = null;
 
     private void Awake()
     {
@@ -65,7 +65,7 @@ public class StartPanel : MonoBehaviour
         _uiRoot.SetActive(false);
 
         // チームカラーを決定して初期化
-        //_gameManager.Initialize(PhotonNetwork.IsMasterClient ? TeamColor.Red : TeamColor.Blue);
+        _gameManager.Initialize(PhotonNetwork.IsMasterClient ? TeamColor.Red : TeamColor.Blue);
 
         //yield return _fadeImageController.AnimateDissolveLevel(0, 1, 0.6f);
     }
