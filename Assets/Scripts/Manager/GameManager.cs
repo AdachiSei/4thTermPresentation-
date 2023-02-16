@@ -10,6 +10,8 @@ using UnityEngine.UI;
 [DisallowMultipleComponent]
 public class GameManager : MonoBehaviour
 {
+    public TeamColor MyTeamColor { get; private set; }
+
     private static readonly int ScoreToWin = 5;
 
     [SerializeField]
@@ -39,7 +41,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private ResultView _resultView = null;
 
-    private TeamColor _myTeamColor;
     private GameData _redGameData = new GameData(TeamColor.Red);
     private GameData _blueGameData = new GameData(TeamColor.Blue);
 
@@ -64,8 +65,8 @@ public class GameManager : MonoBehaviour
 
     public void Init(TeamColor myTeamColor)
     {
-        _myTeamColor = myTeamColor;
-        _playerManager.Init(_myTeamColor);
+        MyTeamColor = myTeamColor;
+        _playerManager.Init(MyTeamColor);
     }
 
     public void AddScore(TeamColor teamColor, int score)
@@ -76,7 +77,7 @@ public class GameManager : MonoBehaviour
 
         if (gameData.Score == ScoreToWin)
         {
-            if (teamColor == _myTeamColor)
+            if (teamColor == MyTeamColor)
             {
                 _resultView.ShowWin();
             }

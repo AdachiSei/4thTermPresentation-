@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class PlayerController : MonoBehaviour
     #region Public Property
 
     public Vector3 Velocity => _rb.velocity;
+    public TeamColor MyColor => _teamColor;
 
     #endregion
 
@@ -24,11 +26,16 @@ public class PlayerController : MonoBehaviour
     [Header("スピード")]
     private float _speed = 5f;
 
+    [SerializeField]
+    [Header("カラー")]
+    TeamColor _teamColor;
+
     #endregion
 
     #region Private Member
 
-    Rigidbody _rb = null;
+    private Rigidbody _rb = null;
+    //private PhotonView _photonView = null;
 
     #endregion
 
@@ -37,6 +44,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        //_photonView = GetComponent<PhotonView>();
     }
 
     #endregion
@@ -48,11 +56,12 @@ public class PlayerController : MonoBehaviour
         var h = Input.GetAxisRaw(InputName.HORIZONTAL);
         var v = Input.GetAxisRaw(InputName.VERTICAL);
         var y = _rb.velocity.y;
-        return new Vector3(h, y, v).normalized * Time.deltaTime * _speed;
+        return new Vector3(h, y, v).normalized * _speed;
     }
 
     public void OnMove(Vector3 velocity)
     {
+        //if (!_photonView.IsMine)return;
         _rb.velocity = velocity;
     }
 

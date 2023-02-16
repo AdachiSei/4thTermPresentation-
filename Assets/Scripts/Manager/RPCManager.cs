@@ -52,6 +52,7 @@ public class RPCManager : MonoBehaviour
     private void StartGame()
     {
         OnReceiveStartGame?.Invoke();
+        Debug.Log("");
     }
 
     [PunRPC]

@@ -62,7 +62,6 @@ public class StartPanel : MonoBehaviour
 
     async private void Transition()
     {
-        //yield return _fadeImageController.AnimateDissolveLevel(1, 0, 0.6f);
         await UniTask.Delay(System.TimeSpan.FromSeconds(0.5f));
 
         _uiRoot.SetActive(false);
@@ -72,7 +71,6 @@ public class StartPanel : MonoBehaviour
 
         await UniTask.WaitUntil(() => PhotonNetwork.PlayerList.Length > 1);
 
-        _playerManager.SetTest();
-        //yield return _fadeImageController.AnimateDissolveLevel(0, 1, 0.6f);
+        _playerManager.OnMove();
     }
 }

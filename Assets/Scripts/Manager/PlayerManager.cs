@@ -21,33 +21,35 @@ public class PlayerManager : MonoBehaviour
     PlayerController _playerBlue = null;
 
     [SerializeField]
+    [Header("プレイヤー")]
+    PlayerController[] _players;
+
+    [SerializeField]
     private RPCManager _rpcManager = null;
 
     [SerializeField]
     private GameManager _gameManager = null;
 
-    private TeamColor _teamColor;
+    #endregion
+
+    #region Private Member
+
     private PlayerController _my;
     private PlayerController _enemy;
 
     #endregion
 
-    #region Unity Methods
+    #region Public Methods
 
-    public void SetTest()
+    public void OnMove()
     {
-        Move();
+        OnMoveAll();
         _rpcManager.OnMovePlayer += _enemy.OnMove;
     }
 
-    #endregion
-
-    #region Public Member
-
     public void Init(TeamColor teamColor)
     {
-        _teamColor = teamColor;
-        GetPlayerController(_teamColor);
+        GetPlayerController(teamColor);
         _my.Activate();
         _enemy.Deactivate();
     }
@@ -58,18 +60,20 @@ public class PlayerManager : MonoBehaviour
 
     private PlayerController GetPlayerController(TeamColor teamColor)
     {
-        _my = teamColor == TeamColor.Red ? _playerRed : _playerBlue;
-        _enemy = teamColor == TeamColor.Blue ? _playerRed : _playerBlue;
+        //_my = teamColor == TeamColor.Blue ? _playerRed : _playerBlue;
+        //_enemy = teamColor == TeamColor.Blue ? _playerRed : _playerBlue;
+        _my = teamColor == TeamColor.Red ? _players[0] : _players[1];
+        _enemy = teamColor == TeamColor.Blue ? _players[0] : _players[1];
         return _my;
     }
 
-    async private void Move()
+    async private void OnMoveAll()
     {   
         while(true)
         {
             _my.OnMove(_my.OnContorol());
             _rpcManager.SendMovePlayer(_my.Velocity);
-            await UniTask.NextFrame();
+            await UniTask.WaitForFixedUpdate();
         }
     }
 
