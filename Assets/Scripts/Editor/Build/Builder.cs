@@ -10,10 +10,10 @@ public static class Builder
 {
     private static readonly string BuildDirectoryName = "Builds";
 
-    [MenuItem("Build/Build And Run NowScene", false, 1)]
+    [MenuItem("Build/Build And Run CurrentScene", false, 1)]
     private static void BuildAndRunPhotonTutorial()
     {
-        var currentSceneName = "GameScene";//SceneManager.GetActiveScene().ToString();
+        var currentSceneName = SceneManager.GetActiveScene().name;
         BuildAndRun(currentSceneName, currentSceneName);
     }
 

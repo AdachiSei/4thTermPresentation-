@@ -36,6 +36,7 @@ public class PlayerManager : MonoBehaviour
 
     private PlayerController _my;
     private PlayerController _enemy;
+    private int _myIndex;
 
     #endregion
 
@@ -44,7 +45,8 @@ public class PlayerManager : MonoBehaviour
     public void OnMove()
     {
         OnMoveAll();
-        _rpcManager.OnMovePlayer += _enemy.OnMove;
+        _myIndex = _gameManager.MyTeamColor.GetHashCode();
+        _rpcManager.OnMovePlayer += _players[_myIndex].OnMove;
     }
 
     public void Init(TeamColor teamColor)
@@ -71,8 +73,8 @@ public class PlayerManager : MonoBehaviour
     {   
         while(true)
         {
-            _my.OnMove(_my.OnContorol());
-            _rpcManager.SendMovePlayer(_my.Velocity);
+            _players[_myIndex].OnMove(_players[_myIndex].OnContorol());
+            _rpcManager.SendMovePlayer(_players[_myIndex].Velocity);
             await UniTask.WaitForFixedUpdate();
         }
     }
