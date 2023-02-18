@@ -32,9 +32,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private TeamComponentHolder _blueTeamComponentHolder = null;
 
-    [SerializeField]
-    private PlayerManager _playerManager = null;
-
     //[SerializeField]
     //private TargetManager _targetManager = null;
 
@@ -60,13 +57,12 @@ public class GameManager : MonoBehaviour
         _connectionManager.OnPlayerEnteredEvent += player => UpdatePlayerList();
         _connectionManager.OnPlayerLeftEvent += player => UpdatePlayerList();
 
-        _rpcManager.OnReceiveStartGame += StartGame;
+        //_rpcManager.OnReceiveStartGame += StartGame;
     }
 
     public void Init(TeamColor myTeamColor)
     {
         MyTeamColor = myTeamColor;
-        _playerManager.Init(MyTeamColor);
     }
 
     public void AddScore(TeamColor teamColor, int score)

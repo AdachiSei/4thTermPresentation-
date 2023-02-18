@@ -1,7 +1,12 @@
+using Cysharp.Threading.Tasks;
 using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
+using System;
 
 /// <summary>
 /// スクリプト
@@ -35,7 +40,8 @@ public class PlayerController : MonoBehaviour
     #region Private Member
 
     private Rigidbody _rb = null;
-    //private PhotonView _photonView = null;
+    private PhotonView _photonView = null;
+    private PhotonRigidbodyView _rigidbodyView = null;
 
     #endregion
 
@@ -44,24 +50,30 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        //_photonView = GetComponent<PhotonView>();
+        _photonView = GetComponent<PhotonView>();
+        _rigidbodyView = GetComponent<PhotonRigidbodyView>();
+        if (!_photonView.IsMine) return;
+        this.FixedUpdateAsObservable().Subscribe(_ => OnMove()).AddTo(this);
     }
 
     #endregion
 
     #region Public Method
 
-    public Vector3 OnContorol()
+    //public Vector3 OnContorol()
+    //{
+    //    var h = Input.GetAxisRaw(InputName.HORIZONTAL);
+    //    var v = Input.GetAxisRaw(InputName.VERTICAL);
+    //    var y = _rb.velocity.y;
+    //    return new Vector3(h, y, v).normalized * _speed;
+    //}
+
+    public void OnMove()
     {
         var h = Input.GetAxisRaw(InputName.HORIZONTAL);
         var v = Input.GetAxisRaw(InputName.VERTICAL);
         var y = _rb.velocity.y;
-        return new Vector3(h, y, v).normalized * _speed;
-    }
-
-    public void OnMove(Vector3 velocity)
-    {
-        //if (!_photonView.IsMine)return;
+        var velocity = new Vector3(h, y, v).normalized * _speed;
         _rb.velocity = velocity;
     }
 

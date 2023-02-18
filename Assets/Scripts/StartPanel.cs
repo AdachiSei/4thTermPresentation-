@@ -21,7 +21,7 @@ public class StartPanel : MonoBehaviour
     private GameObject _uiRoot = null;
 
     [SerializeField]
-    private Button _startButton = null;
+    private Button _joinButton = null;
 
     //[SerializeField]
     //private FadeImageController _fadeImageController = null;
@@ -32,9 +32,6 @@ public class StartPanel : MonoBehaviour
     [SerializeField]
     private GameManager _gameManager = null;
 
-    [SerializeField]
-    private PlayerManager _playerManager = null;
-
     private void Awake()
     {
         // デフォルトのプレイヤーネーム
@@ -43,14 +40,14 @@ public class StartPanel : MonoBehaviour
         // デフォルトのルーム名
         _roomNameInputField.text = $"room-{Random.Range(100, 1000):D03}";
 
-        _startButton.onClick.AddListener(OnStartButtonClicked);
+        _joinButton.onClick.AddListener(OnStartButtonClicked);
 
         _uiRoot.SetActive(true);
     }
 
     private void OnStartButtonClicked()
     {
-        _startButton.interactable = false;
+        _joinButton.interactable = false;
 
         var nickName = _playerNameInputField.text;
         var roomName = _roomNameInputField.text;
@@ -70,7 +67,5 @@ public class StartPanel : MonoBehaviour
         _gameManager.Init(PhotonNetwork.IsMasterClient ? TeamColor.Red : TeamColor.Blue);
 
         await UniTask.WaitUntil(() => PhotonNetwork.PlayerList.Length > 1);
-
-        _playerManager.OnMove();
     }
 }

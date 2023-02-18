@@ -10,7 +10,7 @@ public class Generator : MonoBehaviour
 {
     [SerializeField]
     [Header("")]
-    RPCManager _rpcManager = null;
+    ConnectionManager _connectionManager = null;
 
     [SerializeField]
     [Header("プレイヤーのプレファブ")]
@@ -20,12 +20,12 @@ public class Generator : MonoBehaviour
 
     private void Awake()
     {
-        _rpcManager.OnReceiveStartGame += Generate;
+        _connectionManager.OnJoinedRoomGeneratePlayer += Generate;
     }
 
     private void Generate()
     {
-        PhotonNetwork.Instantiate(_playerPrefab.name, new(), Quaternion.identity);
+        PhotonNetwork.Instantiate(_playerPrefab.name, _playerPrefab.transform.position, Quaternion.identity);
     }
 
     #endregion

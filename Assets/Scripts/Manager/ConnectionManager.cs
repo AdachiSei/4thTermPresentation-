@@ -1,4 +1,5 @@
 using System;
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     #region Event
 
     public event Action<Room> OnJoinedRoomEvent;
+    public event Action OnJoinedRoomGeneratePlayer;
     public event Action<Player> OnPlayerEnteredEvent;
     public event Action<Player> OnPlayerLeftEvent;
 
@@ -65,6 +67,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     {
         _onSuccess?.Invoke();
         OnJoinedRoomEvent?.Invoke(PhotonNetwork.CurrentRoom);
+        OnJoinedRoomGeneratePlayer();
     }
 
     /// <summary>
