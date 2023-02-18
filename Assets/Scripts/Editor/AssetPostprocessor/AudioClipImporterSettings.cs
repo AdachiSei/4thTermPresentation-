@@ -20,6 +20,9 @@ public class AudioClipImporterSettings : AssetPostprocessor
     {
         var audioImporter = assetImporter as AudioImporter;
 
+        //初回インポートのみに制限
+        if (!audioImporter.importSettingsMissing) return;
+
         //DefaultのAudioImporterSampleSettings取得
         var settings = audioImporter.defaultSampleSettings;
 
