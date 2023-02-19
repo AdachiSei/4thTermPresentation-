@@ -17,14 +17,11 @@ public class PlayerController : MonoBehaviour
     #region Public Property
 
     public Vector3 Velocity => _rb.velocity;
+    public bool IsHunter => _isHunter;
 
     #endregion
 
     #region Inspector Member
-
-    [SerializeField]
-    [Header("カメラ")]
-    private Camera _mainCamera = null;
 
     [SerializeField]
     [Header("歩くスピード")]
@@ -33,6 +30,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     [Header("走るスピード")]
     private float _runSpeed = 6f;
+
+    [SerializeField]
+    [Header("鬼なのか")]
+    private bool _isHunter = false;
+
+    private RPCManager _rpcManager = null;
 
     #endregion
 
@@ -53,8 +56,11 @@ public class PlayerController : MonoBehaviour
         _animator = GetComponent<Animator>();
         _photonView = GetComponent<PhotonView>();
         _rigidbodyView = GetComponent<PhotonRigidbodyView>();
+        _rpcManager = FindObjectOfType<RPCManager>();
+        _rpcManager.OnCaughtSurvivor += DeactivatePlayer;
 
         if (!_photonView.IsMine) return;
+        if (PhotonNetwork.IsMasterClient) _isHunter = true;
 
         this
             .FixedUpdateAsObservable()
@@ -63,18 +69,25 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(_isHunter)
+        {
+            if(collision.gameObject.TryGetComponent(out PhotonView player))
+            {
+                _rpcManager.SendCaughtSurvivor(player.ViewID);
+            }
+        }
+    }
+
     #endregion
 
     #region Public Method
 
-    public void Activate()
+    public void DeactivatePlayer(int id)
     {
-        _mainCamera.gameObject.SetActive(true);
-    }
-
-    public void Deactivate()
-    {
-        //_mainCamera.gameObject.SetActive(false);
+        if(_photonView.ViewID == id)
+        gameObject.SetActive(false);
     }
 
     #endregion
@@ -86,7 +99,6 @@ public class PlayerController : MonoBehaviour
         var h = Input.GetAxisRaw(InputName.HORIZONTAL);
         var v = Input.GetAxisRaw(InputName.VERTICAL);
         var y = _rb.velocity.y;
-
 
         var speed = !Input.GetButton(InputName.FIRE3) ? _walkSpeed : _runSpeed;
         if(!Input.GetButton(InputName.FIRE3)) _animator.SetBool("IsRunning", false);

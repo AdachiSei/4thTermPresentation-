@@ -1666,9 +1666,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc371f6c86dbf5145b895cf67580d716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCamera: {fileID: 0}
   _walkSpeed: 3
   _runSpeed: 6
+  _isHunter: 0
 --- !u!95 &632126737985134490
 Animator:
   serializedVersion: 4

@@ -20,6 +20,7 @@ public class RPCManager : MonoBehaviour
 
     public event Action OnReceiveStartGame;
     public event Action<string> OnSetPlayer;
+    public event Action<int> OnCaughtSurvivor;
 
     #endregion
 
@@ -39,6 +40,11 @@ public class RPCManager : MonoBehaviour
         _photonView.RPC(nameof(StartGame), RpcTarget.AllViaServer);
     }
 
+    public void SendCaughtSurvivor(int id)
+    {
+        _photonView.RPC(nameof(CaughtSurvivor), RpcTarget.AllViaServer, id);
+    }
+
     #endregion
 
     #region PunRPC Methods
@@ -48,6 +54,14 @@ public class RPCManager : MonoBehaviour
     {
         OnReceiveStartGame?.Invoke();
         Debug.Log("Start");
+    }
+
+    [PunRPC]
+
+    private void CaughtSurvivor(int id)
+    {
+        OnCaughtSurvivor?.Invoke(id);
+        Debug.Log("誰かが捕まった");
     }
 
     #endregion

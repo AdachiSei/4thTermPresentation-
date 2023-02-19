@@ -7,17 +7,17 @@ using UnityEngine;
 /// 1チームあたりのコンポーネントをまとめるためのコンポーネント
 /// </summary>
 [DisallowMultipleComponent]
-public class TeamComponentHolder : MonoBehaviour
+public class PlayerComponentHolder : MonoBehaviour
 {
     public string PlayerName => _playerNameText.text;
-    public string ScoreText => _scoreText.text;
+    public string ScoreText => _jobText.text;
     public PlayerController Player => _player;
 
     [SerializeField]
     private TMP_Text _playerNameText = null;
 
     [SerializeField]
-    private TMP_Text _scoreText = null;
+    private TMP_Text _jobText = null;
 
     [SerializeField]
     private PlayerController _player = null;
@@ -25,8 +25,8 @@ public class TeamComponentHolder : MonoBehaviour
     public void SetPlayerName(string name) =>
         _playerNameText.text = name;
 
-    public void SetScoreText(string score) =>
-        _scoreText.text = score;
+    public void SetJobText(string job) =>
+        _jobText.text = job;
 
     public void SetPlayer(PlayerController player) =>
         _player = player;
