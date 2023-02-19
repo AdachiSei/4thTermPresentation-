@@ -1669,7 +1669,6 @@ MonoBehaviour:
   _mainCamera: {fileID: 0}
   _walkSpeed: 3
   _runSpeed: 6
-  _teamColor: 0
 --- !u!95 &632126737985134490
 Animator:
   serializedVersion: 4
@@ -1733,7 +1732,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SynchronizePosition: 1
-  m_SynchronizeRotation: 0
+  m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
 --- !u!114 &6462478835857275791

@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviour
     #region Public Property
 
     public Vector3 Velocity => _rb.velocity;
-    public TeamColor MyColor => _teamColor;
 
     #endregion
 
@@ -34,10 +33,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     [Header("走るスピード")]
     private float _runSpeed = 6f;
-
-    [SerializeField]
-    [Header("カラー")]
-    TeamColor _teamColor;
 
     #endregion
 
@@ -91,9 +86,24 @@ public class PlayerController : MonoBehaviour
         var h = Input.GetAxisRaw(InputName.HORIZONTAL);
         var v = Input.GetAxisRaw(InputName.VERTICAL);
         var y = _rb.velocity.y;
+
+
         var speed = !Input.GetButton(InputName.FIRE3) ? _walkSpeed : _runSpeed;
-        var velocity = new Vector3(h, y, v).normalized * speed;
+        if(!Input.GetButton(InputName.FIRE3)) _animator.SetBool("IsRunning", false);
+        else _animator.SetBool("IsRunning", true);
+
+        // カメラの方向から、X-Z平面の単位ベクトルを取得
+        Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+
+        // 方向キーの入力値とカメラの向きから、移動方向を決定
+        Vector3 moveForward = cameraForward * v + Camera.main.transform.right * h;
+
+        // 移動方向にスピードを掛ける。ジャンプや落下がある場合は、別途Y軸方向の速度ベクトルを足す
+        var velocity = moveForward * speed + new Vector3(0, y, 0);
+
         _rb.velocity = velocity;
+
+        if (moveForward != Vector3.zero) transform.rotation = Quaternion.LookRotation(moveForward);
 
         _animator.SetFloat("Speed", velocity.magnitude);
     }
