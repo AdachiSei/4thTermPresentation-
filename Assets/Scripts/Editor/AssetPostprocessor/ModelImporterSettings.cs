@@ -13,7 +13,6 @@ public class ModelImporterSettings : AssetPostprocessor
     private void OnPostprocessModel(GameObject go)
     {
         ModelImporter modelImporter = assetImporter as ModelImporter;
-        Debug.Log(go.name);
 
         //初回インポートのみに制限
         if (!modelImporter.importSettingsMissing) return;
@@ -23,17 +22,20 @@ public class ModelImporterSettings : AssetPostprocessor
         if(go.name.Contains("@"))
         {
             modelImporter.avatarSetup = ModelImporterAvatarSetup.CopyFromOther;
-
             //var modelName = go.name.Split('@');
             ////エディター
             //foreach (var guid in AssetDatabase.FindAssets("t:Avatar"))
             //{
             //    var path = AssetDatabase.GUIDToAssetPath(guid);
             //    var obj = AssetDatabase.LoadMainAssetAtPath(path);
-            //    Debug.Log(obj.name);
+            //    if (obj as ModelImporter) continue;
             //    var data = obj as Avatar;
-            //    if (data.name == $"{modelName[0]}Avatar")
+            //    Debug.Log(data);
+
+            //    if (data.name == $"{modelName[0]}")
             //    {
+            //        Debug.Log("Set");
+                    
             //        modelImporter.sourceAvatar = data;
             //    }
             //}

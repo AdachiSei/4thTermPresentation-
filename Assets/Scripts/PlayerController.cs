@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
     #region Private Member
 
     private Rigidbody _rb = null;
+    private Animator _animator = null;
     private PhotonView _photonView = null;
     private PhotonRigidbodyView _rigidbodyView = null;
 
@@ -50,32 +51,20 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _animator = GetComponent<Animator>();
         _photonView = GetComponent<PhotonView>();
         _rigidbodyView = GetComponent<PhotonRigidbodyView>();
         if (!_photonView.IsMine) return;
-        this.FixedUpdateAsObservable().Subscribe(_ => OnMove()).AddTo(this);
+        this
+            .FixedUpdateAsObservable()
+            .Subscribe(_ => OnMove())
+            .AddTo(this);
     }
 
     #endregion
 
     #region Public Method
 
-    //public Vector3 OnContorol()
-    //{
-    //    var h = Input.GetAxisRaw(InputName.HORIZONTAL);
-    //    var v = Input.GetAxisRaw(InputName.VERTICAL);
-    //    var y = _rb.velocity.y;
-    //    return new Vector3(h, y, v).normalized * _speed;
-    //}
-
-    public void OnMove()
-    {
-        var h = Input.GetAxisRaw(InputName.HORIZONTAL);
-        var v = Input.GetAxisRaw(InputName.VERTICAL);
-        var y = _rb.velocity.y;
-        var velocity = new Vector3(h, y, v).normalized * _speed;
-        _rb.velocity = velocity;
-    }
 
     public void Activate()
     {
@@ -85,6 +74,21 @@ public class PlayerController : MonoBehaviour
     public void Deactivate()
     {
         //_mainCamera.gameObject.SetActive(false);
+    }
+
+    #endregion
+
+    #region Private Method
+
+    private void OnMove()
+    {
+        var h = Input.GetAxisRaw(InputName.HORIZONTAL);
+        var v = Input.GetAxisRaw(InputName.VERTICAL);
+        var y = _rb.velocity.y;
+        var velocity = new Vector3(h, y, v).normalized * _speed;
+        _rb.velocity = velocity;
+
+        _animator.SetFloat("Speed", velocity.magnitude);
     }
 
     #endregion
