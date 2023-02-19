@@ -28,8 +28,12 @@ public class PlayerController : MonoBehaviour
     private Camera _mainCamera = null;
 
     [SerializeField]
-    [Header("スピード")]
-    private float _speed = 5f;
+    [Header("歩くスピード")]
+    private float _walkSpeed = 3f;
+
+    [SerializeField]
+    [Header("走るスピード")]
+    private float _runSpeed = 6f;
 
     [SerializeField]
     [Header("カラー")]
@@ -54,17 +58,19 @@ public class PlayerController : MonoBehaviour
         _animator = GetComponent<Animator>();
         _photonView = GetComponent<PhotonView>();
         _rigidbodyView = GetComponent<PhotonRigidbodyView>();
+
         if (!_photonView.IsMine) return;
+
         this
             .FixedUpdateAsObservable()
             .Subscribe(_ => OnMove())
             .AddTo(this);
+
     }
 
     #endregion
 
     #region Public Method
-
 
     public void Activate()
     {
@@ -85,7 +91,8 @@ public class PlayerController : MonoBehaviour
         var h = Input.GetAxisRaw(InputName.HORIZONTAL);
         var v = Input.GetAxisRaw(InputName.VERTICAL);
         var y = _rb.velocity.y;
-        var velocity = new Vector3(h, y, v).normalized * _speed;
+        var speed = !Input.GetButton(InputName.FIRE3) ? _walkSpeed : _runSpeed;
+        var velocity = new Vector3(h, y, v).normalized * speed;
         _rb.velocity = velocity;
 
         _animator.SetFloat("Speed", velocity.magnitude);
