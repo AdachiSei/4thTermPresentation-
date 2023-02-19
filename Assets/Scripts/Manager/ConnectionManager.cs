@@ -10,6 +10,14 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class ConnectionManager : MonoBehaviourPunCallbacks
 {
+    #region Inspector Member
+
+    [SerializeField]
+    [Header("プレイ人数")]
+    byte _maxPlayers = 4;
+
+    #endregion
+
     #region Private Member
 
     private string _roomName;
@@ -116,7 +124,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         PhotonNetwork
             .JoinOrCreateRoom
                 (_roomName, 
-                    new RoomOptions { MaxPlayers = 2 }, 
+                    new RoomOptions { MaxPlayers = _maxPlayers }, 
                     TypedLobby.Default);
     }
 

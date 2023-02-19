@@ -19,7 +19,7 @@ public class RPCManager : MonoBehaviour
     #region Event
 
     public event Action OnReceiveStartGame;
-    public event Action<Vector3> OnMovePlayer;
+    public event Action<string> OnSetPlayer;
 
     #endregion
 
@@ -39,11 +39,6 @@ public class RPCManager : MonoBehaviour
         _photonView.RPC(nameof(StartGame), RpcTarget.AllViaServer);
     }
 
-    public void SendMovePlayer(Vector3 velocity)
-    {
-        _photonView.RPC(nameof(MovePlayer), RpcTarget.Others, velocity);
-    }
-
     #endregion
 
     #region PunRPC Methods
@@ -52,13 +47,7 @@ public class RPCManager : MonoBehaviour
     private void StartGame()
     {
         OnReceiveStartGame?.Invoke();
-        Debug.Log("");
-    }
-
-    [PunRPC]
-    private void MovePlayer(Vector3 velocity)
-    {
-        OnMovePlayer?.Invoke(velocity);
+        Debug.Log("Start");
     }
 
     #endregion

@@ -27,4 +27,7 @@ public class TeamComponentHolder : MonoBehaviour
 
     public void SetScoreText(string score) =>
         _scoreText.text = score;
+
+    public void SetPlayer(PlayerController player) =>
+        _player = player;
 }

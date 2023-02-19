@@ -10,25 +10,18 @@ using UnityEngine;
 public class RoomInfoView : MonoBehaviour
 {
     public string RoomName => _roomNameText.text;
-    public string RedPlayerName => _redPlayerNameText.text;
-    public string BluePlayerName => _bluePlayerNameText.text;
+    public TMP_Text[] PlayerName => _playerNameText;
 
     [SerializeField]
     private TMP_Text _roomNameText = null;
 
     [SerializeField]
-    private TMP_Text _redPlayerNameText = null;
-
-    [SerializeField]
-    private TMP_Text _bluePlayerNameText = null;
+    private TMP_Text[] _playerNameText = null;
 
 
     public string SetRoomName(string name) =>
         _roomNameText.text = name;
 
-    public string SetRedPlayerName(string name) =>
-        _redPlayerNameText.text = name;
-
-    public string SetBluePlayerName(string name) =>
-        _bluePlayerNameText.text = name;
+    public string SetPlayerName(string name,int index) =>
+        _playerNameText[index].text = name;
 }

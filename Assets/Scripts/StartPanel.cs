@@ -38,7 +38,8 @@ public class StartPanel : MonoBehaviour
         _playerNameInputField.text = $"player-{Random.Range(100, 1000):D03}";
 
         // デフォルトのルーム名
-        _roomNameInputField.text = $"room-{Random.Range(100, 1000):D03}";
+        //_roomNameInputField.text = $"room-{Random.Range(100, 1000):D03}";
+        _roomNameInputField.text = $"room-{100:D03}";
 
         _joinButton.onClick.AddListener(OnStartButtonClicked);
 
@@ -63,9 +64,23 @@ public class StartPanel : MonoBehaviour
 
         _uiRoot.SetActive(false);
 
+        TeamColor color = TeamColor.Red;
         // チームカラーを決定して初期化
-        _gameManager.Init(PhotonNetwork.IsMasterClient ? TeamColor.Red : TeamColor.Blue);
-
-        await UniTask.WaitUntil(() => PhotonNetwork.PlayerList.Length > 1);
+        switch (PhotonNetwork.PlayerList.Length)
+        {
+            case 1:
+                color = TeamColor.Red;
+                break;
+            case 2:
+                color = TeamColor.Blue;
+                break;
+            case 3:
+                color = TeamColor.Yellow;
+                break;
+            case 4:
+                color = TeamColor.Green;
+                break;
+        }
+        _gameManager.Init(color);
     }
 }

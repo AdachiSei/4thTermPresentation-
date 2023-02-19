@@ -1,10 +1,12 @@
 using UnityEngine;
 
 /// <summary>
-/// チームカラーのイーナム
+/// カラーのイーナム
 /// </summary>
 public enum TeamColor
 {
     Red,
-    Blue
+    Blue,
+    Yellow,
+    Green
 }

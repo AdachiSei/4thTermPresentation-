@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public TeamColor MyTeamColor { get; private set; }
+    public TeamComponentHolder[] PlayerComponentHolders => _playerComponentHolders;
 
     private static readonly int ScoreToWin = 5;
 
@@ -27,10 +28,7 @@ public class GameManager : MonoBehaviour
     private RPCManager _rpcManager = null;
 
     [SerializeField]
-    private TeamComponentHolder _redTeamComponentHolder = null;
-
-    [SerializeField]
-    private TeamComponentHolder _blueTeamComponentHolder = null;
+    private TeamComponentHolder[] _playerComponentHolders = null;
 
     //[SerializeField]
     //private TargetManager _targetManager = null;
@@ -40,6 +38,8 @@ public class GameManager : MonoBehaviour
 
     private GameData _redGameData = new GameData(TeamColor.Red);
     private GameData _blueGameData = new GameData(TeamColor.Blue);
+    private GameData _yellowGameData = new GameData(TeamColor.Yellow);
+    private GameData _greenGameData = new GameData(TeamColor.Green);
 
     private void Start()
     {
@@ -57,8 +57,10 @@ public class GameManager : MonoBehaviour
         _connectionManager.OnPlayerEnteredEvent += player => UpdatePlayerList();
         _connectionManager.OnPlayerLeftEvent += player => UpdatePlayerList();
 
-        //_rpcManager.OnReceiveStartGame += StartGame;
+        _rpcManager.OnReceiveStartGame += StartGame;
     }
+
+    #region Public Methods
 
     public void Init(TeamColor myTeamColor)
     {
@@ -71,44 +73,55 @@ public class GameManager : MonoBehaviour
         gameData.AddScore(score);
         GetTeamComponentHolder(teamColor).SetScoreText(gameData.Score.ToString());
 
-        if (gameData.Score == ScoreToWin)
+        if (gameData.Score >= ScoreToWin)
         {
-            if (teamColor == MyTeamColor)
-            {
-                _resultView.ShowWin();
-            }
-            else
-            {
-                _resultView.ShowLose();
-            }
+            if (teamColor == MyTeamColor) _resultView.ShowWin();
+            else _resultView.ShowLose();
+
             //_targetManager.DeactivateSpawn();
         }
     }
 
     public GameData GetTeamGameData(TeamColor teamColor)
     {
-        return teamColor == TeamColor.Red ? _redGameData : _blueGameData;
+        switch (teamColor)
+        {
+            case TeamColor.Blue:
+                return _blueGameData;
+            case TeamColor.Yellow:
+                return _yellowGameData;
+            case TeamColor.Green:
+                return _greenGameData;
+            default:
+                return _redGameData;
+        }
     }
 
     public TeamComponentHolder GetTeamComponentHolder(TeamColor teamColor)
     {
-        return teamColor == TeamColor.Red ? _redTeamComponentHolder : _blueTeamComponentHolder;
+        switch (teamColor)
+        {
+            case TeamColor.Blue:
+                return PlayerComponentHolders[1];
+            case TeamColor.Yellow:
+                return PlayerComponentHolders[2];
+            case TeamColor.Green:
+                return PlayerComponentHolders[3];
+            default:
+                return PlayerComponentHolders[0];
+        }
     }
+
+    #endregion
+
+    #region Private Methods
 
     private void UpdatePlayerList()
     {
         foreach (var player in PhotonNetwork.PlayerList)
         {
-            if (player.IsMasterClient)
-            {
-                // マスタークライアントはRed決め打ち
-                _roomInfoView.SetRedPlayerName(player.NickName);
-            }
-            else
-            {
-                // ゲストクライアントはBlue決め打ち
-                _roomInfoView.SetBluePlayerName(player.NickName);
-            }
+            Debug.Log(player.ActorNumber);
+            _roomInfoView.SetPlayerName(player.NickName, player.ActorNumber - 1);
         }
     }
 
@@ -118,4 +131,5 @@ public class GameManager : MonoBehaviour
         //_targetManager.ActivateSpawn();
     }
 
+    #endregion
 }
