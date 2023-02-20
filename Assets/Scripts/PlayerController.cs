@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
 {
     #region Public Property
 
+    public bool IsTripping { get; private set; }
     public Vector3 Velocity => _rb.velocity;
     public bool IsHunter => _isHunter;
 
@@ -57,10 +58,10 @@ public class PlayerController : MonoBehaviour
         _photonView = GetComponent<PhotonView>();
         _rigidbodyView = GetComponent<PhotonRigidbodyView>();
         _rpcManager = FindObjectOfType<RPCManager>();
+        _rpcManager.OnReceiveStartGame += SetIsHunter;
         _rpcManager.OnCaughtSurvivor += DeactivatePlayer;
 
         if (!_photonView.IsMine) return;
-        if (PhotonNetwork.IsMasterClient) _isHunter = true;
 
         this
             .FixedUpdateAsObservable()
@@ -87,7 +88,11 @@ public class PlayerController : MonoBehaviour
     public void DeactivatePlayer(int id)
     {
         if(_photonView.ViewID == id)
-        gameObject.SetActive(false);
+        {
+            IsTripping = true;
+            _animator.SetBool("IsTripping", true);
+            _rb.constraints = RigidbodyConstraints.FreezeAll;
+        }
     }
 
     #endregion
@@ -118,6 +123,12 @@ public class PlayerController : MonoBehaviour
         if (moveForward != Vector3.zero) transform.rotation = Quaternion.LookRotation(moveForward);
 
         _animator.SetFloat("Speed", velocity.magnitude);
+    }
+
+    private void SetIsHunter()
+    {
+        if (!_photonView.IsMine) return;
+        if (PhotonNetwork.IsMasterClient) _isHunter = true;
     }
 
     #endregion

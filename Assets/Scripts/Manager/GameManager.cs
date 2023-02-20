@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (var holder in _playerComponentHolders)
         {
-            holder.SetJobText("Survivor");
+            /*if(holder.Player != null)*/ holder.SetJobText("Survivor");
         }
         foreach (var player in PhotonNetwork.PlayerList)
         {
@@ -163,11 +163,11 @@ public class GameManager : MonoBehaviour
     async private void HunterWin()
     {
         await UniTask
-            .WaitUntil(() => !_playerComponentHolders[1].Player || _playerComponentHolders[1].Player.gameObject.activeSelf == false);
+            .WaitUntil(() => !_playerComponentHolders[1].Player || _playerComponentHolders[1].Player.IsTripping == true);
         await UniTask
-            .WaitUntil(() => !_playerComponentHolders[2].Player || _playerComponentHolders[2].Player.gameObject.activeSelf == false);
+            .WaitUntil(() => !_playerComponentHolders[2].Player || _playerComponentHolders[2].Player.IsTripping == true);
         await UniTask
-            .WaitUntil(() => !_playerComponentHolders[3].Player || _playerComponentHolders[3].Player.gameObject.activeSelf == false);
+            .WaitUntil(() => !_playerComponentHolders[3].Player || _playerComponentHolders[3].Player.IsTripping == true);
         Debug.Log("‚¨‚ß‚Å‚Æ‚¤");
         if (_winText.text == "") _winText.text = "Hunter Win";
     }
